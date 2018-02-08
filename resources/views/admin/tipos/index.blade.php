@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('titulo')
-    Indicadores
+    Tipos de Indicadores
 @endsection
 
 @section('subtitulo')
@@ -10,12 +10,12 @@
 
 @section('breadcrumb')
     <li>Administração</li>
-    <li class="active">Indicadores</li>
+    <li class="active">Tipos de Indicador</li>
 @endsection
 
 @section('botoes_extras')
-    <a id="btnAdd" data-popup="tooltip" title="Adicionar indicador" class="btn btn-primary btn-labeled"><b><i
-                    class="icon-plus-circle2"></i></b> Indicador</a>
+    <a id="btnAdd" data-popup="tooltip" title="Adicionar tipo" class="btn btn-primary btn-labeled"><b><i
+                    class="icon-plus-circle2"></i></b> Tipo</a>
 @endsection
 
 @section('container')
@@ -25,7 +25,7 @@
         <!-- Basic datatable -->
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h5 class="panel-title">Indicadores</h5>
+                <h5 class="panel-title">Tipos de Indicador</h5>
                 <div class="heading-elements">
                     <ul class="icons-list">
                         <li><a data-action="collapse"></a></li>
@@ -35,34 +35,48 @@
                 </div>
             </div>
 
-            <table id="dtindicador" class="table dtpadrao table-bordered table-striped table-hover">
+            <table id="dttipo" class="table dtpadrao table-bordered table-striped table-hover">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>Nome</th>
-                    <th>Ord.</th>
-                    <th>Categoria</th>
-                    <th>Tipo</th>
                     <th class="text-center">Ações</th>
                 </tr>
                 </thead>
                 <tbody class="table-container">
-                @include('admin.indicadores.table')
+                @include('admin.tipos.table')
                 </tbody>
             </table>
         </div>
         <!-- /basic responsive configuration -->
     </div>
     <!-- Horizontal form modal -->
-    <div id="modaledit" class="modal fade">
+    <div id="modaledittipo" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title">Alterar indicador</h5>
+                    <h5 class="modal-title">Alterar tipo</h5>
                 </div>
 
-                @include('admin.indicadores.form')
+                <form id="frmTipo" class="form-horizontal">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="id_tipo"/>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tipo" class="control-label col-sm-3">Tipo</label>
+                            <div class="col-sm-9">
+                                <input id="tipo" name="tipo" type="text" placeholder="Nome do Tipo"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -74,22 +88,19 @@
         btnEditClick = function () {
             $('.btnEdit').click(function (e) {
                 e.preventDefault();
-                $('#modaledit .modal-title').text('Alterar indicador');
+                $('#modaledittipo .modal-title').text('Alterar tipo');
                 var id = this.id;
-                // var linha = $('#linha-' + id);
-                $("#frmIndicador input[name=id_indicador]").val(id);
-                $("#indicador").val($('#linha-' + id + ' td:eq(1)').text());
-                $("#categoria_id").select2('val', ($('#linha-' + id + ' td:eq(3)').attr('name')));
-                $("#tipo_ind_id").select2('val', ($('#linha-' + id + ' td:eq(4)').attr('name')));
-                $("#ordem").val($('#linha-' + id + ' td:eq(2)').text());
-                $('#modaledit').modal('show');
+                var name = this.name;
+                $("#frmTipo input[name=id_tipo]").val(id);
+                $("#tipo").val(name);
+                $('#modaledittipo').modal('show');
             });
         }
         btnDeleteClick = function () {
             $('.btnDelete').click(function (e) {
                 e.preventDefault();
                 var id = this.name;
-                var url = 'indicadores/excluir/' + id;
+                var url = 'tipos/excluir/' + id;
                 var token = $('input[name=_token]').val();
                 // Alert combination
                 swal({
@@ -136,50 +147,28 @@
             btnEditClick();
             $('#btnAdd').click(function (e) {
                 e.preventDefault();
-                $('#modaledit .modal-title').text('Adicionar indicador');
-                $("#frmIndicador input[name=id_indicador]").val('');
-                $("#indicador").val('');
-                $("#categoria_id").select2('val', '0');
-                $("#tipo_ind_id").select2('val', '0');
-                $("#ordem").val(0);
-                $('#modaledit').modal('show');
+                $('#modaledittipo .modal-title').text('Adicionar tipo');
+                $("#frmTipo input[name=id_tipo]").val('');
+                $("#tipo").val('');
+                $('#modaledittipo').modal('show');
             });
             btnDeleteClick();
-            $('#frmIndicador').on('submit', function (e) {
+            $('#frmTipo').on('submit', function (e) {
                 e.preventDefault();
+                var tipo = $('#tipo').val();
+                if (tipo.length <= 0) {
+                    msgNotificacao("warning", "Oops...", "Dados inválidos");
+                    return;
+                }
+                var id = $("#frmTipo input[name=id_tipo]").val();
                 var token = $('input[name=_token]').val();
-                var id = $("#frmIndicador input[name=id_indicador]").val();
-                var indicador = $('#indicador').val();
-                var categoria = $("#categoria_id").val();
-                var txtCategoria = $('#categoria_id').select2()
-                var tipo = $("#tipo_ind_id").val();
-                var ordem = $("#ordem").val();
-                if (indicador.length <= 0 || indicador == "") {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Erro no indicador informado...");
-                    return;
-                }
-                if (categoria <= 0) {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe uma categoria válida...");
-                    return;
-                }
-                if (tipo <= 0) {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe um tipo de indicador válido...");
-                    return;
-                }
-                if (ordem < 0) {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe uma ordem positiva ou 0 (zero)...");
-                    return;
-                }
                 if (id > 0) {
                     var form = {
                         '_token': token,
-                        'indicador': indicador,
-                        'categoria_id': categoria,
-                        'tipo_ind_id': tipo,
-                        'ordem': ordem,
+                        'tipo': $('#tipo').val(),
                         'id': id
                     };
-                    var url = 'indicadores/edit/' + id;
+                    var url = 'tipos/edit/' + id;
                     $.ajax({
                         url: url,
                         type: 'PUT',
@@ -189,11 +178,11 @@
                                 msgNotificacao("error", "Oops...", 'Dados inválidos!');
                             } else {
                                 msgNotificacao("success", "Alterações salvas!", "Feedback gerado com sucesso!!!");
-                                $('#linha-' + id + ' td:eq(1)').text(data['indicador']);
-                                $('#linha-' + id + ' td:eq(2)').text(data['ordem']);
-                                $('#linha-' + id + ' td:eq(3)').text(data['ordem']);
-
-                                $('#modaledit').modal('hide');
+                                tipo = data['tipo'];
+                                tblnome = $('#linha-' + id + ' td:eq(1)');
+                                tblnome.text(tipo);
+                                $('#linha-' + id + ' .btnEdit').attr('name', tipo);
+                                $('#modaledittipo').modal('hide');
                             }
                         },
                         error: function (error) {
@@ -202,21 +191,18 @@
                     })
                 } else {
                     $.ajax({
-                        url: 'indicadores/adicionar',
+                        url: 'tipos/adicionar',
                         type: 'POST',
                         data: {
                             '_token': token,
-                            'indicador': indicador,
-                            'categoria_id': categoria,
-                            'tipo_ind_id': tipo,
-                            'ordem': ordem
+                            'tipo': $('#tipo').val()
                         },
                         success: function (data) {
                             if ((data.errors)) {
                                 msgNotificacao("error", "Oops...", 'Dados inválidos!');
                             } else {
                                 msgNotificacao("success", "Alterações salvas!", "Feedback gerado com sucesso!!!");
-                                $('#modaledit').modal('hide');
+                                $('#modaledittipo').modal('hide');
                                 refreshTable();
                             }
                         },
@@ -231,14 +217,11 @@
 
         function refreshTable() {
             $('tbody.table-container').fadeOut();
-            $('tbody.table-container').load('indicadores/lists', function () {
+            $('tbody.table-container').load('tipos/lists', function () {
                 $('tbody.table-container').fadeIn();
                 btnEditClick();
                 btnDeleteClick();
             });
-            // $('.dtpadrao').dataTable().fnClearTable();
-            $('.dtpadrao').dataTable().fnDestroy();
-            dtpadrao();
         }
     </script>
 @endsection

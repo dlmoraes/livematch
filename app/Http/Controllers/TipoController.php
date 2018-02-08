@@ -8,8 +8,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\DAO\CategoriaRepositoryInterface;
-use App\Repositories\DAO\IndicadorRepositoryInterface;
 use App\Repositories\DAO\TipoIndRepositoryInterface;
 use Illuminate\Support\Facades\Input;
 use Exception;
@@ -20,43 +18,28 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 
-class IndicadorController extends Controller
+class TipoController extends Controller
 {
 
     private $repositorio;
-    private $categoriaRepository;
-    private $tipoRepository;
 
     protected $regras =
         [
-            'ordem' => 'required',
-            'indicador' => 'required|min:2|max:50',
-            'categoria_id' => 'required',
-            'tipo_ind_id' => 'required'
+            'tipo' => 'required|min:5|max:50'
         ];
 
-    public function __construct(IndicadorRepositoryInterface $indicadorRepository,
-                                CategoriaRepositoryInterface $categoriaRepository,
-                                TipoIndRepositoryInterface $tipoRepository)
+    public function __construct(TipoIndRepositoryInterface $tipoRepository)
     {
-        $this->repositorio = $indicadorRepository;
-        $this->categoriaRepository = $categoriaRepository;
-        $this->tipoRepository = $tipoRepository;
+        $this->repositorio = $tipoRepository;
     }
 
     public function index(Request $request)
     {
-        $categorias = $this->categoriaRepository->categoriasSelect();
-        $tipos = $this->tipoRepository->tipoindSelect();
-        return view('admin.indicadores.index', [
-            'dados' => $this->repositorio->todos(),
-            'categorias' => $categorias,
-            'tipos' => $tipos
-            ]);
+        return view('admin.tipos.index', ['dados' => $this->repositorio->todos()]);
     }
 
     public function lists(Request $request) {
-        return view('admin.indicadores.table', ['dados' => $this->repositorio->todos()]);
+        return view('admin.tipos.table', ['dados' => $this->repositorio->todos()]);
     }
 
     public function createAjax(Request $request) {
@@ -67,8 +50,8 @@ class IndicadorController extends Controller
                 return Response::json(array('errors' => $validacao->getMessageBag()->toArray()));
             } else {
                 error_log('Requisição Ajax recebida');
-                $indicador = $this->repositorio->criar(Input::all());
-                return response()->json($indicador);
+                $tipo = $this->repositorio->criar(Input::all());
+                return response()->json($tipo);
             }
         }
     }
@@ -81,8 +64,8 @@ class IndicadorController extends Controller
                 return Response::json(array('errors' => $validacao->getMessageBag()->toArray()));
             } else {
                 error_log('Requisição Ajax recebida');
-                $indicador = $this->repositorio->atualizar($id, Input::all());
-                return response()->json($indicador);
+                $tipo = $this->repositorio->atualizar($id, Input::all());
+                return response()->json($tipo);
             }
         }
     }
@@ -90,8 +73,8 @@ class IndicadorController extends Controller
     public function deleteAjax(Request $request, $id) {
         if ($request->ajax()) {
             if ($id) {
-                $indicador = $this->repositorio->excluir($id);
-                return response()->json($indicador);
+                $tipo = $this->repositorio->excluir($id);
+                return response()->json($tipo);
             }
         }
     }

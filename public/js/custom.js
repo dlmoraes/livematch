@@ -1,13 +1,4 @@
-$(function () {
-
-    $("body").tooltip({container: 'body'});
-
-    $('#empresa_id').select2({
-        placeholder: 'Selecione uma empresa...'
-    });
-    // Table setup
-    // ------------------------------
-
+var dtpadrao = function () {
     $.extend($.fn.dataTable.defaults, {
         autoWidth: true,
         dom: '<"datatable-header"fBl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
@@ -26,6 +17,7 @@ $(function () {
         }
     });
     $('.dtpadrao').DataTable({
+        allowClear: true,
         fixedHeader: true,
         buttons: [
             {
@@ -56,12 +48,32 @@ $(function () {
         },
         keys: true
     });
+
     $(".dataTables_paginate").removeClass("paging_simple_numbers").addClass('pagination pagination-flat pagination-rounded');
     $('.dataTables_filter input[type=search]').attr('placeholder', 'Pesquisar...');
     $('.dataTables_length select').select2({
         minimumResultsForSearch: Infinity,
         width: 'auto'
     });
+};
+
+$(function () {
+
+    $("body").tooltip({container: 'body'});
+
+    $('#empresa_id').select2({
+        placeholder: 'Selecione uma empresa...'
+    });
+
+    $('#categoria_id').select2({
+        placeholder: 'Selecione uma categoria...'
+    });
+
+    $('#tipo_ind_id').select2({
+        placeholder: 'Selecione o tipo de indicador...'
+    });
+    dtpadrao();
+
 });
 
 function msgNotificacao(tipo, titulo, msg) {

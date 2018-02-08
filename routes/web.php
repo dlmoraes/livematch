@@ -73,6 +73,15 @@ Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'categorias', 'where'
     Route::delete('excluir/{id}', ['as' => 'categorias.delete', 'uses' => 'CategoriaController@deleteAjax']);
 });
 
+// Tipos de Indicador
+Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'tipos', 'where' => ['id' => '[0-9]+']], function () {
+    Route::get('', ['as' => 'tipos', 'uses' => 'TipoController@index']);
+    Route::get('lists', ['as' => 'tipos.lists', 'uses' => 'TipoController@lists']);
+    Route::post('adicionar', ['as' => 'tipos.add', 'uses' => 'TipoController@createAjax']);
+    Route::put('edit/{id}', ['as' => 'tipos.edit', 'uses' => 'TipoController@editAjax']);
+    Route::delete('excluir/{id}', ['as' => 'tipos.delete', 'uses' => 'TipoController@deleteAjax']);
+});
+
 // Ano e Mês
 Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'anomes', 'where' => ['id' => '[0-9]+']], function () {
     Route::get('', ['as' => 'anomes', 'uses' => 'AnoMesController@index']);

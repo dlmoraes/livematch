@@ -6,6 +6,7 @@
         <li><a href="{{ route('regionais') }}"><i class="icon-location3"></i>Regionais</a></li>
 		<li><a href="{{ route('distritais') }}"><i class="icon-drawer3"></i>Distritais</a></li>
 		<li><a href="{{ route('categorias') }}"><i class="icon-stack3"></i>Categorias</a></li>
+		<li><a href="{{ route('tipos') }}"><i class="icon-color-sampler"></i>Tipos de Indicador</a></li>
 		<li><a href="{{ route('anomes') }}"><i class="icon-calendar22"></i>Ano / Mês </a></li>
 		<li><a href="{{ route('indicadores') }}"><i class="icon-target2"></i>Indicadores</a></li>
     </ul>
