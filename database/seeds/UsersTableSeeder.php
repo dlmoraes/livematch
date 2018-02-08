@@ -21,6 +21,16 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('123456'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ],
+        [
+            'empresa_id' => 1,
+            'login' => 'U1010382',
+            'nome' => 'Diego Moraes',
+            'email' => 'diego.rosario@celpa.com.br',
+            'nivel' => 'Admin',
+            'password' => bcrypt('123456'),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
      }
 }

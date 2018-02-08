@@ -95,4 +95,11 @@ class IndicadorController extends Controller
             }
         }
     }
+
+    public function indicadoresAjax(Request $request) {
+      if ($request->ajax()) {
+        $indicadores = $this->repositorio->todos();
+        return response()->json($indicadores);
+      }
+    }
 }

@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('titulo')
-    Indicadores
+    Calendário
 @endsection
 
 @section('subtitulo')
-    - cadastrados
+    - Ano e Mês
 @endsection
 
 @section('breadcrumb')
     <li>Administração</li>
-    <li class="active">Indicadores</li>
+    <li class="active">Ano e Mês</li>
 @endsection
 
 @section('botoes_extras')
-    <a id="btnAdd" data-popup="tooltip" title="Adicionar indicador" class="btn btn-primary btn-labeled"><b><i
-                    class="icon-plus-circle2"></i></b> Indicador</a>
+    <a id="btnAdd" data-popup="tooltip" title="Adicionar calendário" class="btn btn-primary btn-labeled"><b><i
+                    class="icon-plus-circle2"></i></b> Calendário</a>
 @endsection
 
 @section('container')
@@ -25,7 +25,7 @@
         <!-- Basic datatable -->
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h5 class="panel-title">Indicadores</h5>
+                <h5 class="panel-title">Calendário</h5>
                 <div class="heading-elements">
                     <ul class="icons-list">
                         <li><a data-action="collapse"></a></li>
@@ -35,19 +35,17 @@
                 </div>
             </div>
 
-            <table id="dtindicador" class="table dtpadrao table-bordered table-striped table-hover">
+            <table id="dtanomes" class="table dtpadrao table-bordered table-striped table-hover">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nome</th>
-                    <th>Ord.</th>
-                    <th>Categoria</th>
-                    <th>Tipo</th>
+                    <th>Ano</th>
+                    <th colspan="12">Meses</th>
                     <th class="text-center">Ações</th>
                 </tr>
                 </thead>
                 <tbody class="table-container">
-                @include('admin.indicadores.table')
+                @include('admin.anomes.table')
                 </tbody>
             </table>
         </div>
@@ -59,10 +57,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title">Alterar indicador</h5>
+                    <h5 class="modal-title">Alterar calendário</h5>
                 </div>
 
-                @include('admin.indicadores.form')
+                @include('admin.anomes.form')
             </div>
         </div>
     </div>
@@ -74,14 +72,12 @@
         btnEditClick = function (id) {
             $('.btnEdit').click(function (e) {
                 e.preventDefault();
-                $('#modaledit .modal-title').text('Alterar indicador');
+                $('#modaledit .modal-title').text('Alterar calendário');
                 var id = this.id;
                 // var linha = $('#linha-' + id);
-                $("#frmIndicador input[name=id_indicador]").val(id);
-                $("#indicador").val($('#linha-' + id + ' td:eq(1)').text());
-                $("#categoria_id").select2('val', ($('#linha-' + id + ' td:eq(3)').attr('name')));
-                $("#tipo_ind_id").select2('val', ($('#linha-' + id + ' td:eq(4)').attr('name')));
-                $("#ordem").val($('#linha-' + id + ' td:eq(2)').text());
+                $("#frmAnoMes input[name=id_anomes]").val(id);
+                $("#ano_id").select2('val', ($('#linha-' + id + ' td:eq(1)').attr('name')));
+                $("#mes_id").select2('val', ($('#linha-' + id + ' td:eq(2)').attr('name')));
                 $('#modaledit').modal('show');
             });
         }
@@ -89,7 +85,7 @@
             $('.btnDelete').click(function (e) {
                 e.preventDefault();
                 var id = this.name;
-                var url = 'indicadores/excluir/' + id;
+                var url = 'anomes/excluir/' + id;
                 var token = $('input[name=_token]').val();
                 // Alert combination
                 swal({
@@ -131,63 +127,49 @@
                     });
             });
         }
+
         function limparFormIndicator() {
-          $("#frmIndicador input[name=id_indicador]").val();
-          $("#indicador").val('');
-          $("#categoria_id").select2('val', 0);
-          $("#tipo_ind_id").select2('val', 0);
-          $("#ordem").val(0);
-          $('#modaledit').modal('show');
+            $("#frmAnoMes input[name=id_anomes]").val();
+            $("#ano_id").select2('val', 0);
+            $("#mes_id").select2('val', 0);
+            $('#modaledit').modal('show');
         }
+
         $(function () {
             btnEditClick();
             $('#btnAdd').click(function (e) {
                 e.preventDefault();
-                $('#modaledit .modal-title').text('Adicionar indicador');
-                $("#frmIndicador input[name=id_indicador]").val('');
-                $("#indicador").val('');
-                $("#categoria_id").select2('val', '0');
-                $("#tipo_ind_id").select2('val', '0');
-                $("#ordem").val(0);
+                $('#modaledit .modal-title').text('Adicionar calendário');
+                $("#frmAnoMes input[name=id_anomes]").val('');
+                $("#ano_id").select2('val', '0');
+                $("#mes_id").select2('val', '0');
                 $('#modaledit').modal('show');
             });
             btnDeleteClick();
-            $('#frmIndicador').on('submit', function (e) {
+            $('#frmAnoMes').on('submit', function (e) {
                 e.preventDefault();
                 var token = $('input[name=_token]').val();
-                var id = $("#frmIndicador input[name=id_indicador]").val();
-                var indicador = $('#indicador').val();
-                var categoria = $("#categoria_id").val();
-                var txtCategoria = $('#categoria_id').select2('data')[0].text;
-                var tipo = $("#tipo_ind_id").val();
-                var txtTipo = $('#tipo_ind_id').select2('data')[0].text;
-                var ordem = $("#ordem").val();
-                if (indicador.length <= 0 || indicador == "") {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Erro no indicador informado...");
+                var id = $("#frmAnoMes input[name=id_anomes]").val();
+                var ano = $("#ano_id").val();
+                var txtAno = $('#ano_id').select2('data')[0].text;
+                var mes = $("#mes_id").val();
+                var txtMes = $('#mes_id').select2('data')[0].text;
+                if (ano <= 0) {
+                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe um ano válido...");
                     return;
                 }
-                if (categoria <= 0) {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe uma categoria válida...");
-                    return;
-                }
-                if (tipo <= 0) {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe um tipo de indicador válido...");
-                    return;
-                }
-                if (ordem < 0) {
-                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe uma ordem positiva ou 0 (zero)...");
+                if (mes <= 0) {
+                    msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Informe um mês válido...");
                     return;
                 }
                 if (id > 0) {
                     var form = {
                         '_token': token,
-                        'indicador': indicador,
-                        'categoria_id': categoria,
-                        'tipo_ind_id': tipo,
-                        'ordem': ordem,
+                        'ano_id': ano,
+                        'mes_id': mes,
                         'id': id
                     };
-                    var url = 'indicadores/edit/' + id;
+                    var url = 'anomes/edit/' + id;
                     $.ajax({
                         url: url,
                         type: 'PUT',
@@ -196,13 +178,11 @@
                             if ((data.errors)) {
                                 msgNotificacao("error", "Oops...", 'Dados inválidos!');
                             } else {
-                                msgNotificacao("success", "Alterações salvas!", "Feedback gerado com sucesso!!!");
-                                $('#linha-' + id + ' td:eq(1)').text(data['indicador']);
-                                $('#linha-' + id + ' td:eq(2)').text(data['ordem']);
-                                $('#linha-' + id + ' td:eq(3)').text(txtCategoria);
-                                $('#linha-' + id + ' td:eq(4)').attr('name', data['categoria_id']);
-                                $('#linha-' + id + ' td:eq(5)').text(txtTipo);
-                                $('#linha-' + id + ' td:eq(6)').attr('name', data['tipo_ind_id']);
+                                msgNotificacao("success", "Alterações salvas!", "Operação realizada com sucesso!!!");
+                                $('#linha-' + id + ' td:eq(1)').text(txtAno);
+                                $('#linha-' + id + ' td:eq(2)').attr('name', data['ano_id']);
+                                $('#linha-' + id + ' td:eq(3)').text(txtMes);
+                                $('#linha-' + id + ' td:eq(4)').attr('name', data['mes_id']);
                                 limparFormIndicator();
                                 $('#modaledit').modal('hide');
                             }
@@ -213,20 +193,18 @@
                     })
                 } else {
                     $.ajax({
-                        url: 'indicadores/adicionar',
+                        url: 'anomeses/adicionar',
                         type: 'POST',
                         data: {
                             '_token': token,
-                            'indicador': indicador,
-                            'categoria_id': categoria,
-                            'tipo_ind_id': tipo,
-                            'ordem': ordem
+                            'ano_id': ano,
+                            'mes_id': mes
                         },
                         success: function (data) {
                             if ((data.errors)) {
                                 msgNotificacao("error", "Oops...", 'Dados inválidos!');
                             } else {
-                                msgNotificacao("success", "Alterações salvas!", "Feedback gerado com sucesso!!!");
+                                msgNotificacao("success", "Alterações salvas!", "Operação realizada com sucesso!!!");
                                 $('#modaledit').modal('hide');
                                 refreshTable();
                             }
@@ -242,7 +220,7 @@
 
         function refreshTable() {
             $('tbody.table-container').fadeOut();
-            $('tbody.table-container').load('indicadores/lists', function () {
+            $('tbody.table-container').load('anomes/lists', function () {
                 $('tbody.table-container').fadeIn();
                 btnEditClick();
                 btnDeleteClick();

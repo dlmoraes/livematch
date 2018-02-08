@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\DAO\AnoRepositoryInterface;
+use App\Repositories\DAO\MesRepositoryInterface;
 use App\Repositories\DAO\AnoMesRepositoryInterface;
 use Illuminate\Support\Facades\Input;
 use Exception;
@@ -22,20 +24,33 @@ class AnoMesController extends Controller
 {
 
     private $repositorio;
+    private $anoRepository;
+    private $mesRepository;
 
     protected $regras =
         [
-            'anomes' => 'required'
+            'ano_id' => 'required',
+            'mes_id' => 'required'
         ];
 
-    public function __construct(AnoMesRepositoryInterface $anomesRepository)
+    public function __construct(AnoMesRepositoryInterface $anomesRepository,
+                                AnoRepositoryInterface $anoRepository,
+                                MesRepositoryInterface $mesRepository)
     {
         $this->repositorio = $anomesRepository;
+        $this->anoRepository = $anoRepository;
+        $this->mesRepository = $mesRepository;
     }
 
     public function index(Request $request)
     {
-        return view('admin.anomes.index', ['dados' => $this->repositorio->todos()]);
+        $anos = $this->anoRepository->anosSelect();
+        $meses = $this->mesRepository->mesesSelect();
+        return view('admin.anomes.index', [
+            'dados' => $this->repositorio->todos(),
+            'anos' => $anos,
+            'meses' => $meses
+            ]);
     }
 
     public function lists(Request $request) {
@@ -77,5 +92,12 @@ class AnoMesController extends Controller
                 return response()->json($anomes);
             }
         }
+    }
+
+    public function anomesAjax(Request $request) {
+      if ($request->ajax()) {
+        $anomes = $this->repositorio->todos();
+        return response()->json($anomes);
+      }
     }
 }

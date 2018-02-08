@@ -16,6 +16,18 @@ var dtpadrao = function () {
             $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
         }
     });
+    var gridIndicadorTemplate = "<div class='col-md-4'> " +
+        "    <div class='panel border-left-lg border-left-primary'> " +
+        "        <div class='panel-body'> " +
+        "            <div class='row'> " +
+        "                <div class='col-md-8'> " +
+        "                    <h6 class='no-margin-top'><a href='#urlIndicador'>#tituloIndicador</a></h6> " +
+        "                    <p class='mb-15'>One morning, when Gregor Samsa woke from troubled..</p> " +
+        "                </div> " +
+        "            </div> " +
+        "        </div> " +
+        "    </div> " +
+        "</div>";
     $('.dtpadrao').DataTable({
         allowClear: true,
         fixedHeader: true,
@@ -71,6 +83,14 @@ $(function () {
 
     $('#tipo_ind_id').select2({
         placeholder: 'Selecione o tipo de indicador...'
+    });
+
+    $('#ano_id').select2({
+        placeholder: 'Selecione o ano...'
+    });
+
+    $('#mes_id').select2({
+        placeholder: 'Selecione o mês...'
     });
     dtpadrao();
 

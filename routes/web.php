@@ -92,10 +92,14 @@ Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'anomes', 'where' => 
 });
 
 // Indicadores
-Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'indicadores', 'where' => ['id' => '[0-9]+']], function () {
+Route::group(['middleware' => ['auth','superuser', 'web'], 'prefix' => 'indicadores', 'where' => ['id' => '[0-9]+']], function () {
     Route::get('', ['as' => 'indicadores', 'uses' => 'IndicadorController@index']);
     Route::get('lists', ['as' => 'indicadores.lists', 'uses' => 'IndicadorController@lists']);
     Route::post('adicionar', ['as' => 'indicadores.add', 'uses' => 'IndicadorController@createAjax']);
     Route::put('edit/{id}', ['as' => 'indicadores.edit', 'uses' => 'IndicadorController@editAjax']);
     Route::delete('excluir/{id}', ['as' => 'indicadores.delete', 'uses' => 'IndicadorController@deleteAjax']);
+});
+
+Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'common', 'where' => ['id' => '[0-9]+']], function () {
+   Route::get('indicadores', ['as' => 'common.indicadores', 'uses' => 'IndicadorController@indicadoresAjax']);
 });

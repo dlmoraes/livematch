@@ -25,36 +25,6 @@
                                                 model</a></h6>
                                         <p class="mb-15">One morning, when Gregor Samsa woke from troubled..</p>
                                     </div>
-
-                                    {{--<div class="col-md-4">--}}
-                                        {{--<ul class="list task-details">--}}
-                                            {{--<li>28 January, 2015</li>--}}
-                                            {{--<li class="dropdown">--}}
-                                                {{--Priority: &nbsp;--}}
-                                                {{--<a href="#" class="label label-primary dropdown-toggle"--}}
-                                                   {{--data-toggle="dropdown">Normal--}}
-                                                    {{--<span class="caret"></span></a>--}}
-                                                {{--<ul class="dropdown-menu dropdown-menu-right">--}}
-                                                    {{--<li><a href="#"><span--}}
-                                                                    {{--class="status-mark position-left bg-danger"></span>--}}
-                                                            {{--Highest priority</a></li>--}}
-                                                    {{--<li><a href="#"><span--}}
-                                                                    {{--class="status-mark position-left bg-info"></span>--}}
-                                                            {{--High--}}
-                                                            {{--priority</a></li>--}}
-                                                    {{--<li class="active"><a href="#"><span--}}
-                                                                    {{--class="status-mark position-left bg-primary"></span>--}}
-                                                            {{--Normal--}}
-                                                            {{--priority</a></li>--}}
-                                                    {{--<li><a href="#"><span--}}
-                                                                    {{--class="status-mark position-left bg-success"></span>--}}
-                                                            {{--Low--}}
-                                                            {{--priority</a></li>--}}
-                                                {{--</ul>--}}
-                                            {{--</li>--}}
-                                            {{--<li><a href="#">Eternity app</a></li>--}}
-                                        {{--</ul>--}}
-                                    {{--</div>--}}
                                 </div>
                             </div>
                         </div>
@@ -63,4 +33,14 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+  <script type="text/javascript">
+    $(function() {
+        $.ajax({
+          url: ''
+        })
+    })
+  </script>
 @endsection
