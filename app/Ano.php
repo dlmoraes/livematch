@@ -10,4 +10,9 @@ class Ano extends Model
 
     protected $fillable = ['ano'];
 
+    public function anoMes()
+    {
+        return $this->belongsTo("App\AnoMes");
+    }
+
 }

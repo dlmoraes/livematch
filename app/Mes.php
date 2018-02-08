@@ -10,4 +10,9 @@ class Mes extends Model
 
     protected $fillable = ['mes','mes_texto'];
 
+    public function anoMes()
+    {
+        return $this->belongsTo("App\AnoMes");
+    }
+
 }
