@@ -12,7 +12,7 @@ class Ano extends Model
 
     public function anoMes()
     {
-        return $this->belongsTo("App\AnoMes");
+        return $this->hasMany("App\AnoMes");
     }
 
 }

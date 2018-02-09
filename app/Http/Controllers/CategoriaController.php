@@ -42,6 +42,13 @@ class CategoriaController extends Controller
         return view('admin.categorias.table', ['dados' => $this->repositorio->todos()]);
     }
 
+    public function categoriasAjax(Request $request) {
+      if ($request->ajax()) {
+        $categorias = $this->repositorio->categoriasSelect();
+        return response()->json($categorias);
+      }
+    }
+
     public function createAjax(Request $request) {
         if ($request->ajax()) {
             $validacao = Validator::make(Input::all(), $this->regras);

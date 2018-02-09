@@ -1,3 +1,29 @@
+var gridIndicadorTemplate = "<div class='col-md-4'> " +
+    "    <input type='hidden' id='categoria' value='#idcategoria' /> " +
+    "    <input type='hidden' id='tipo' value='#idtipo' /> " +
+    "    <input type='hidden' id='dtmodificado' value='#dtmodificado' /> " +
+    "    <div class='panel border-left-lg border-left-primary'> " +
+    "        <div class='panel-body'> " +
+    "            <div class='row'> " +
+    "                <div class='col-md-8'> " +
+    "                    <h6 class='no-margin-top'><a href='#urlIndicador'>#tituloIndicador</a></h6> " +
+    "                    <p class='mb-15'>#objetivoIndicador</p> " +
+    "                </div> " +
+    "                <div class='col-md-4'> " +
+    "                 <ul class='list task-details'> " +
+    "                    <li><span class='label #corPrioridade'> #txtPrioridade</span></li> " +
+    "                    <li><span class='label bg-slate label-rounded label-icon'><i class='#iconTipo'></i></span></li> " +
+    "                  </ul> " +
+    "                </div>  " +
+    "            </div> " +
+    "        </div> " +
+    "        <div class='panel-footer panel-footer-condensed'> " +
+    "        	<div class='heading-elements'> " +
+    "        		<span class='heading-text'>Categoria: <span class='text-semibold'>#txtCategoria</span></span> " +
+    "        	</div> " +
+    "        </div> " +
+    "    </div> " +
+    "</div>";
 var dtpadrao = function () {
     $.extend($.fn.dataTable.defaults, {
         autoWidth: true,
@@ -16,18 +42,6 @@ var dtpadrao = function () {
             $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
         }
     });
-    var gridIndicadorTemplate = "<div class='col-md-4'> " +
-        "    <div class='panel border-left-lg border-left-primary'> " +
-        "        <div class='panel-body'> " +
-        "            <div class='row'> " +
-        "                <div class='col-md-8'> " +
-        "                    <h6 class='no-margin-top'><a href='#urlIndicador'>#tituloIndicador</a></h6> " +
-        "                    <p class='mb-15'>One morning, when Gregor Samsa woke from troubled..</p> " +
-        "                </div> " +
-        "            </div> " +
-        "        </div> " +
-        "    </div> " +
-        "</div>";
     $('.dtpadrao').DataTable({
         allowClear: true,
         fixedHeader: true,
@@ -107,7 +121,7 @@ function msgNotificacao(tipo, titulo, msg) {
     });
 };
 
-$(function() {
+$(function () {
 
     // Hide navbar with Headroom.js library
     $(".navbar-fixed-top").headroom({
@@ -118,7 +132,7 @@ $(function() {
         offset: $('.navbar').outerHeight(),
 
         // callback when unpinned, `this` is headroom object
-        onUnpin: function() {
+        onUnpin: function () {
             $('.navbar .dropdown-menu').parent().removeClass('open');
         }
     });

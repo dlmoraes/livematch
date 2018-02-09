@@ -44,6 +44,17 @@
                 !!}
             </div>
         </div>
+        <div class="form-group">
+            <label for="ordem" class="control-label col-sm-3">Ordem</label>
+            <div class="col-sm-9">
+                {!! Form::textarea('objetivo', null, [
+                                                'id'                => 'objetivo',
+                                                'class'             => 'form-control',
+                                                'placeholder'       => 'Informe o objetivo do indicador...'
+                                            ])
+                !!}
+            </div>
+        </div>
     </div>
 
     <div class="modal-footer">

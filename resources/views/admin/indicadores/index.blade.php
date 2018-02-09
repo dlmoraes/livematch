@@ -134,6 +134,7 @@
         function limparFormIndicator() {
           $("#frmIndicador input[name=id_indicador]").val();
           $("#indicador").val('');
+          $("#objetivo").val('');
           $("#categoria_id").select2('val', 0);
           $("#tipo_ind_id").select2('val', 0);
           $("#ordem").val(0);
@@ -144,11 +145,13 @@
             $('#btnAdd').click(function (e) {
                 e.preventDefault();
                 $('#modaledit .modal-title').text('Adicionar indicador');
-                $("#frmIndicador input[name=id_indicador]").val('');
+                limparFormIndicator();
+                /*$("#frmIndicador input[name=id_indicador]").val('');
                 $("#indicador").val('');
+                $("#objetivo").val('');
                 $("#categoria_id").select2('val', '0');
                 $("#tipo_ind_id").select2('val', '0');
-                $("#ordem").val(0);
+                $("#ordem").val(0);*/
                 $('#modaledit').modal('show');
             });
             btnDeleteClick();
@@ -162,6 +165,7 @@
                 var tipo = $("#tipo_ind_id").val();
                 var txtTipo = $('#tipo_ind_id').select2('data')[0].text;
                 var ordem = $("#ordem").val();
+                var objetivo =  $('#objetivo').val();
                 if (indicador.length <= 0 || indicador == "") {
                     msgNotificacao("warning", "Oops...", "Dados inválidos<br/>Erro no indicador informado...");
                     return;
@@ -185,6 +189,7 @@
                         'categoria_id': categoria,
                         'tipo_ind_id': tipo,
                         'ordem': ordem,
+                        'objetivo': objetivo,
                         'id': id
                     };
                     var url = 'indicadores/edit/' + id;
@@ -200,9 +205,9 @@
                                 $('#linha-' + id + ' td:eq(1)').text(data['indicador']);
                                 $('#linha-' + id + ' td:eq(2)').text(data['ordem']);
                                 $('#linha-' + id + ' td:eq(3)').text(txtCategoria);
-                                $('#linha-' + id + ' td:eq(4)').attr('name', data['categoria_id']);
-                                $('#linha-' + id + ' td:eq(5)').text(txtTipo);
-                                $('#linha-' + id + ' td:eq(6)').attr('name', data['tipo_ind_id']);
+                                $('#linha-' + id + ' td:eq(3)').attr('name', data['categoria_id']);
+                                $('#linha-' + id + ' td:eq(4)').text(txtTipo);
+                                $('#linha-' + id + ' td:eq(4)').attr('name', data['tipo_ind_id']);
                                 limparFormIndicator();
                                 $('#modaledit').modal('hide');
                             }
@@ -220,6 +225,7 @@
                             'indicador': indicador,
                             'categoria_id': categoria,
                             'tipo_ind_id': tipo,
+                            'objetivo': objetivo,
                             'ordem': ordem
                         },
                         success: function (data) {

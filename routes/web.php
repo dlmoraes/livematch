@@ -102,4 +102,5 @@ Route::group(['middleware' => ['auth','superuser', 'web'], 'prefix' => 'indicado
 
 Route::group(['middleware' => ['auth', 'web'], 'prefix' => 'common', 'where' => ['id' => '[0-9]+']], function () {
    Route::get('indicadores', ['as' => 'common.indicadores', 'uses' => 'IndicadorController@indicadoresAjax']);
+   Route::get('categorias', ['as' => 'common.categorias', 'uses' => 'CategoriaController@categoriasAjax']);
 });

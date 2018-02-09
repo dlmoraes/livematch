@@ -12,12 +12,12 @@ class AnoMes extends Model
 
     public function ano()
     {
-        return $this->hasMany("App\Ano");
+        return $this->belongsTo("App\Ano","ano_id");
     }
 
     public function mes()
     {
-        return $this->hasMany("App\Mes");
+        return $this->belongsTo("App\Mes","mes_id");
     }
 
 }
